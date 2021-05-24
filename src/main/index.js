@@ -97,7 +97,39 @@ global.loadMainWindow = function () {
   isLoggingin = false;
 };
 
+// Modified start
+
+let appPath = app.getPath('exe');
+appPath = appPath.replace(/\\Electron QQ.exe/, '');
+const exec = require('child_process').exec;
+let dbpath = path.join(STORE_PATH, "/mongodb");
+let cmdStr = 'mongod ' + '--dbpath ' + dbpath;
+let workerProcess;
+
+function runExec() {
+  var fs = require('fs');
+  if (!fs.existsSync(dbpath)) fs.mkdir(dbpath, function () {}); 
+
+  workerProcess = exec(cmdStr, {}, function() {});
+  // 打印正常的后台可执行程序输出
+  workerProcess.stdout.on('data', function (data) {
+    console.log('stdout: ' + data)
+  })
+
+  // 打印错误的后台可执行程序输出
+  workerProcess.stderr.on('data', function (data) {
+    console.log('stderr: ' + data)
+  })
+
+  // 退出之后的输出
+  workerProcess.on('close', function (code) {
+    console.log('out code：' + code)
+  })
+}
+
 app.on("ready", () => {
+  runExec();
+
   const isFirstInstance = app.requestSingleInstanceLock();
   if (!isFirstInstance) app.quit();
   else {
@@ -115,8 +147,8 @@ app.on("ready", () => {
     if (process.env.NYA) {
       //ui debug mode
       global.bot = {
-        on() {},
-        logout() {},
+        on() { },
+        logout() { },
       };
       global.loadMainWindow();
     } else {
@@ -166,12 +198,12 @@ app.on("second-instance", () => {
   }
 });
 
-app.on('before-quit', ()=>{
+app.on('before-quit', () => {
   if (mainWindow) mainWindow.destroy()
   if (global.bot) global.bot.logout();
 })
 
-app.on('will-quit', ()=>{
+app.on('will-quit', () => {
   if (mainWindow) mainWindow.destroy()
   if (global.bot) global.bot.logout();
 })
