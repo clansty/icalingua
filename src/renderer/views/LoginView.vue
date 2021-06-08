@@ -36,10 +36,10 @@
 				<span class="el-form-item__label">Auto login</span>
 				<el-switch v-model="form.autologin" :style="{ marginLeft: '5px' }"/>
 				<br/>
-				<span class="el-form-item__label">Use MongoDB</span>
-				<el-switch v-model="mongodb" :style="{ marginLeft: '5px' }"/>
+				<span class="el-form-item__label">Indexed DB storage test edition</span>
+<!--				<el-switch v-model="mongodb" :style="{ marginLeft: '5px' }"/>-->
 			</el-form-item>
-			<el-form-item prop="connStr" v-show="mongodb">
+			<el-form-item prop="connStr" v-show="false">
 				<el-input
 					:show-password="connStr.split(':').length>2"
 					placeholder="MongoDB connect string"
@@ -135,7 +135,7 @@ export default {
 				protocol: account.protocol,
 				autologin: account.autologin,
 			};
-		this.mongodb = glodb.get("mongodb").value();
+		this.mongodb = true
 		this.connStr = glodb.get("connStr").value() || 'mongodb://localhost'
 	},
 	mounted() {
