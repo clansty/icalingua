@@ -138,7 +138,7 @@
 									<svg-icon name="document"/>
 								</slot>
 							</div>
-							<span>{{ message.content }}</span>
+							<span><pre>{{ message.content }}</pre></span>
 						</div>
 
 						<div class="vac-text-timestamp">
