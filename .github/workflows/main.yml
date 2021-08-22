@@ -452,7 +452,7 @@ jobs:
           path: icalingua/unpacked
 
       - name: fix premissions
-        run: chmod +x unpacked/icalingua
+        run: chmod +x unpacked/icalingua-sakura
 
       - name: pack
         run: yarn build:electron --pd unpacked -l ${{ matrix.package }}
@@ -494,7 +494,7 @@ jobs:
           path: icalingua/unpacked
 
       - name: fix premissions
-        run: chmod +x unpacked/icalingua
+        run: chmod +x unpacked/icalingua-sakura
 
       - name: pack
         run: yarn build:electron --pd unpacked --ia32 -l ${{ matrix.package }}
@@ -536,7 +536,7 @@ jobs:
           path: icalingua/unpacked
 
       - name: fix premissions
-        run: chmod +x unpacked/icalingua
+        run: chmod +x unpacked/icalingua-sakura
 
       - name: pack
         run: yarn build:electron --pd unpacked --arm64 -l ${{ matrix.package }}
