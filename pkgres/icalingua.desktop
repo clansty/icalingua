@@ -2,7 +2,7 @@
 Categories=chat;Network;
 Exec=icalingua %u
 Icon=icalingua.png
-Name=Icalingua
+Name=Icalingua Sakura Edition
 Comment=A Linux client for QQ and more
 StartupNotify=true
 Terminal=false

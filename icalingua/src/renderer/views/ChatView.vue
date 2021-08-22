@@ -427,7 +427,7 @@ Chromium ${process.versions.chrome}`
             this.messages = []
             this.panel = ''
             ipc.setSelectedRoom(0, '')
-            document.title = 'Icalingua'
+            document.title = 'Icalingua Sakura Edition'
         }
     },
     computed: {

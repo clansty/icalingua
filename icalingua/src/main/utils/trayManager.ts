@@ -17,7 +17,7 @@ export const createTray = () => {
         getStaticPath(),
         getConfig().darkTaskIcon ? 'darknewmsg.png' : 'newmsg.png',
     ))
-    tray.setToolTip('Icalingua')
+    tray.setToolTip('Icalingua Sakura Edition')
     tray.on('click', () => {
         const window = getMainWindow()
         window.show()
@@ -94,8 +94,8 @@ export const updateTrayIcon = async () => {
     let p
     const unread = await getUnreadCount()
     const title = ui.getSelectedRoomName()
-        ? ui.getSelectedRoomName() + ' — Icalingua'
-        : 'Icalingua'
+        ? ui.getSelectedRoomName() + ' — Icalingua Sakura Edition'
+        : 'Icalingua Sakura Edition'
     if (unread) {
         p = path.join(
             getStaticPath(),

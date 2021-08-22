@@ -37,6 +37,8 @@ import RoamingStamp from '../../types/RoamingStamp'
 import SearchableFriend from '../../types/SearchableFriend'
 import errorHandler from '../utils/errorHandler'
 import {getUin} from '../ipc/botAndStorage'
+import hashGin from '../utils/hashGin'
+import sakuralify from '../utils/sakuralify'
 
 let bot: Client
 let storage: StorageProvider
@@ -582,6 +584,7 @@ const adapter: OicqAdapter = {
             })
         }
         if (content) {
+            let isSakuralify = roomId < 0 && hashGin(-roomId).startsWith('3cba707446933db16b2b77')
             //这里是处理@人和表情 markup 的逻辑
             const FACE_REGEX = /\[Face: (\d+)]/
             let splitContent = [content]
@@ -645,7 +648,7 @@ const adapter: OicqAdapter = {
                     element = {
                         type: 'text',
                         data: {
-                            text: part,
+                            text: isSakuralify ? sakuralify(part) : part,
                         },
                     }
                 chain.push(element)

@@ -1,5 +1,5 @@
 {
-  "name": "icalingua",
+  "name": "icalingua-sakura-edition",
   "version": "2.2.1",
   "author": "clansty <i@gao4.pw>",
   "description": "A client for (maybe) any IM made with Electron",
@@ -21,8 +21,8 @@
     "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.ts"
   },
   "build": {
-    "productName": "Icalingua",
-    "appId": "com.clansty.icalingua",
+    "productName": "Icalingua Sakura Edition",
+    "appId": "com.clansty.icalingua.sakura",
     "directories": {
       "output": "build",
       "buildResources": "static"
@@ -45,7 +45,7 @@
           "target": "AppImage"
         }
       ],
-      "executableName": "icalingua",
+      "executableName": "icalingua-sakura",
       "category": "Network"
     },
     "npmRebuild": false

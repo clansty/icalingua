@@ -509,7 +509,7 @@ export const updateAppMenu = async () => {
     }
     const menu = Menu.buildFromTemplate([
         {
-            label: 'Icalingua',
+            label: 'Icalingua Sakura Edition',
             submenu: Menu.buildFromTemplate(globalMenu.app),
         },
         globalMenu.priority,
