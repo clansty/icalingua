@@ -6578,9 +6578,9 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"icalingua@workspace:.":
+"icalingua-sakura-edition@workspace:.":
   version: 0.0.0-use.local
-  resolution: "icalingua@workspace:."
+  resolution: "icalingua-sakura-edition@workspace:."
   dependencies:
     "@types/fluent-ffmpeg": ^2.1.18
     "@types/ioredis": ^4.26.4
