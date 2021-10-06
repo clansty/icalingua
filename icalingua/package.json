@@ -23,6 +23,7 @@
   "build": {
     "productName": "Icalingua",
     "appId": "com.clansty.icalingua",
+    "asar": false,
     "directories": {
       "output": "build",
       "buildResources": "static"
