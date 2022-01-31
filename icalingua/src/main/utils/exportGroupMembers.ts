@@ -5,7 +5,6 @@ import path from 'path'
 import formatDate from '../../utils/formatDate'
 import writeCsvData from './writeCsvData'
 import ui from './ui'
-import errorHandler from './errorHandler'
 
 const membersHeader: Array<{ id: string; title: string }> = [
     { id: 'uin', title: '帐号' },
@@ -68,7 +67,6 @@ export default async (group: number) => {
         if (await writeCsvData(membersHeader, membersExport, savePath)) return ui.messageSuccess('导出成功')
         ui.messageError('导出失败')
     } catch (e) {
-        errorHandler(e, true)
         ui.messageError(`导出失败: ${e}`)
     }
 }

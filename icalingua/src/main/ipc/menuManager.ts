@@ -46,17 +46,7 @@ import SearchableGroup from '../../types/SearchableGroup'
 import * as themes from '../utils/themes'
 import version from '../utils/version'
 import gfsTokenManager from '../utils/gfsTokenManager'
-import socketIoProvider from '../providers/socketIoProvider'
 
-const setOnlineStatus = (status: OnlineStatusType) => {
-    setStatus(status)
-        .then(() => {
-            getConfig().account.onlineStatus = status
-            updateAppMenu()
-            saveConfigFile()
-        })
-        .catch((res) => console.log(res))
-}
 const setKeyToSendMessage = (key: 'Enter' | 'CtrlEnter' | 'ShiftEnter') => {
     getConfig().keyToSendMessage = key
     saveConfigFile()
@@ -228,14 +218,8 @@ const buildRoomMenu = (room: Room): Menu => {
                 label: '群文件',
                 async click() {
                     let url
-                    if (getConfig().adapter === 'socketIo') {
                         const token = await requestGfsToken(-room.roomId)
                         url = `${getConfig().server}/file-manager/?${token}`
-                    }
-                    else {
-                        const token = gfsTokenManager.create(-room.roomId)
-                        url = `http://localhost:${socketIoProvider.getPort()}/file-manager/?${token}`
-                    }
                     const size = screen.getPrimaryDisplay().size
                     const win = new BrowserWindow({
                         autoHideMenuBar: true,
@@ -385,26 +369,6 @@ const buildRoomMenu = (room: Room): Menu => {
         )
     }
     else {
-        // menu.append(new MenuItem({
-        //     label: 'ta 的线索',
-        //     async click() {
-        //         const size = screen.getPrimaryDisplay().size
-        //         const win = new BrowserWindow({
-        //             height: size.height - 200,
-        //             width: 500,
-        //             autoHideMenuBar: true,
-        //         })
-        //         const cookies = await getCookies('ti.qq.com')
-        //         for (const i in cookies) {
-        //             await win.webContents.session.cookies.set({
-        //                 url: 'https://ti.qq.com',
-        //                 name: i,
-        //                 value: cookies[i],
-        //             })
-        //         }
-        //         await win.loadURL('https://ti.qq.com/friends/recall?uin=' + room.roomId)
-        //     },
-        // }))
         menu.append(
             new MenuItem({
                 label: '互动标识',
@@ -579,29 +543,6 @@ export const updateAppMenu = async () => {
         //设置
         options: [
             new MenuItem({
-                label: '在线状态',
-                submenu: [
-                    {
-                        type: 'radio',
-                        label: '在线',
-                        checked: getConfig().account.onlineStatus === OnlineStatusType.Online,
-                        click: () => setOnlineStatus(OnlineStatusType.Online),
-                    },
-                    {
-                        type: 'radio',
-                        label: '离开',
-                        checked: getConfig().account.onlineStatus === OnlineStatusType.Afk,
-                        click: () => setOnlineStatus(OnlineStatusType.Afk),
-                    },
-                    {
-                        type: 'radio',
-                        label: '隐身',
-                        checked: getConfig().account.onlineStatus === OnlineStatusType.Hide,
-                        click: () => setOnlineStatus(OnlineStatusType.Hide),
-                    },
-                ],
-            }),
-            new MenuItem({
                 label: '管理屏蔽的会话',
                 click: () => {
                     const size = screen.getPrimaryDisplay().size
@@ -654,15 +595,6 @@ export const updateAppMenu = async () => {
                         click: () => setKeyToSendMessage('ShiftEnter'),
                     },
                 ],
-            }),
-            new MenuItem({
-                label: '自动登录',
-                type: 'checkbox',
-                checked: getConfig().account.autologin,
-                click: (menuItem) => {
-                    getConfig().account.autologin = menuItem.checked
-                    saveConfigFile()
-                },
             }),
             new MenuItem({
                 label: '切换会话窗口时自动获取历史消息',

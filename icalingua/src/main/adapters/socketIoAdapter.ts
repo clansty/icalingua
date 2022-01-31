@@ -23,9 +23,7 @@ import SearchableFriend from '../../types/SearchableFriend'
 import { Notification } from 'freedesktop-notifications'
 import isInlineReplySupported from '../utils/isInlineReplySupported'
 import BridgeVersionInfo from '../../types/BridgeVersionInfo'
-import errorHandler from '../utils/errorHandler'
 import getBuildInfo from '../utils/getBuildInfo'
-import { checkUpdate, getCachedUpdate } from '../utils/updateChecker'
 import path from 'path'
 import getStaticPath from '../../utils/getStaticPath'
 import formatDate from '../../utils/formatDate'
@@ -64,7 +62,6 @@ const attachSocketEvents = () => {
                 room,
             )
         } catch (e) {
-            errorHandler(e, true)
         }
         await updateTrayIcon()
     })
@@ -271,11 +268,6 @@ const adapter: Adapter = {
     sendOnlineData() {
         if (!cachedOnlineData) return
         let sysInfo = getBuildInfo()
-        const updateInfo = getCachedUpdate()
-        if (updateInfo && updateInfo.hasUpdate) {
-            if (sysInfo) sysInfo += '\n\n'
-            sysInfo += '新版本可用: ' + updateInfo.latestVersion
-        }
         if (formatDate('MM-dd') === '11-20') {
             if (sysInfo) sysInfo += '\n\n'
             sysInfo += '11月20日是跨性别纪念日，纪念那些因暴力而不幸逝世的跨性别者们\n愿你也能被他人温柔以待'
@@ -285,9 +277,6 @@ const adapter: Adapter = {
         cachedOnlineData.sysInfo = sysInfo
         ui.sendOnlineData(cachedOnlineData)
         ui.setAllRooms(rooms)
-        if (!updateInfo) {
-            checkUpdate().then(adapter.sendOnlineData)
-        }
     },
     getIgnoredChats(): Promise<IgnoreChatInfo[]> {
         return new Promise((resolve) => socket.emit('getIgnoredChats', resolve))
@@ -481,7 +470,6 @@ const adapter: Adapter = {
                 room,
             )
         } catch (e) {
-            errorHandler(e, true)
         }
         socket.emit('updateRoom', roomId, room)
     },

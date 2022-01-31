@@ -1,5 +1,4 @@
 import getFriends from './getFriends'
-import errorHandler from './errorHandler'
 import { getFriendsFallback, getGroups } from '../ipc/botAndStorage'
 import writeCsvData from './writeCsvData'
 import { getMainWindow } from './windowManager'
@@ -25,7 +24,6 @@ export default async (type: 'friend' | 'group') => {
         if (await exportFunc(savePath)) ui.messageSuccess('导出成功')
         else ui.messageError('导出失败')
     } catch (e) {
-        errorHandler(e, true)
         ui.messageError(`导出失败: ${e}`)
     }
 }
@@ -61,7 +59,6 @@ const exportFriendsAsCsv = async (savePath: string) => {
         }
     } catch (e) {
         //获取含分组好友失败
-        errorHandler(e, true)
         const friendsRaw = await getFriendsFallback()
         for (const f of friendsRaw) {
             friendsExport.push({

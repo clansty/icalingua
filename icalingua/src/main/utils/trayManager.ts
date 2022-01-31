@@ -12,7 +12,6 @@ import {
 } from '../ipc/botAndStorage'
 import { getConfig, saveConfigFile } from './configManager'
 import getStaticPath from '../../utils/getStaticPath'
-import { pushUnreadCount } from './socketIoSlave'
 import setPriority from './setPriority'
 import ui from './ui'
 import Room from '../../types/Room'
@@ -153,6 +152,5 @@ export const updateTrayIcon = async () => {
     }
     tray.setImage(p)
     app.setBadgeCount(unread)
-    pushUnreadCount(unread)
     updateTrayMenu()
 }

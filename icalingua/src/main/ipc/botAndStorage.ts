@@ -2,22 +2,17 @@ import { BrowserWindow, ipcMain, screen } from 'electron'
 import LoginForm from '../../types/LoginForm'
 import { getConfig } from '../utils/configManager'
 import getWinUrl from '../../utils/getWinUrl'
-import oicqAdapter from '../adapters/oicqAdapter'
-import Adapter, { CookiesDomain } from '../../types/Adapter'
+import { CookiesDomain } from '../../types/Adapter'
 import socketIoAdapter from '../adapters/socketIoAdapter'
 import getCharCount from '../../utils/getCharCount'
 import Cookies from '../../types/cookies'
 import getFriends from '../utils/getFriends'
 import atCache from '../utils/atCache'
 import GroupOfFriend from '../../types/GroupOfFriend'
-import errorHandler from '../utils/errorHandler'
 import SearchableFriend from '../../types/SearchableFriend'
 import * as themes from '../utils/themes'
-import SearchableGroup from '../../types/SearchableGroup'
 
-let adapter: Adapter
-if (getConfig().adapter === 'oicq') adapter = oicqAdapter
-else if (getConfig().adapter === 'socketIo') adapter = socketIoAdapter
+let adapter = socketIoAdapter
 
 export const {
     sendMessage,
@@ -84,7 +79,6 @@ ipcMain.handle('getFriendsAndGroups', async () => {
     try {
         friends = await getFriends()
     } catch (e) {
-        errorHandler(e, true)
         friends = null
         friendsFallback = await getFriendsFallback()
     }
