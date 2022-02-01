@@ -1,6 +1,6 @@
-import { app, Menu, MenuItem, Tray } from 'electron'
+import {app, Menu, MenuItem, Tray} from 'electron'
 import path from 'path'
-import { getMainWindow } from './windowManager'
+import {getMainWindow} from './windowManager'
 import exit from './exit'
 import {
     getUin,
@@ -10,7 +10,7 @@ import {
     getUnreadRooms,
     clearRoomUnread,
 } from '../ipc/botAndStorage'
-import { getConfig, saveConfigFile } from './configManager'
+import {getConfig, saveConfigFile} from './configManager'
 import getStaticPath from '../../utils/getStaticPath'
 import setPriority from './setPriority'
 import ui from './ui'
@@ -19,7 +19,7 @@ import Room from '../../types/Room'
 let tray: Tray
 
 export const createTray = () => {
-    tray = new Tray(path.join(getStaticPath(), getConfig().darkTaskIcon ? 'darknewmsg.png' : 'newmsg.png'))
+    tray = new Tray(path.join(getStaticPath(), 'trayTemplate.png'))
     tray.setToolTip('Icalingua')
     tray.on('click', () => {
         const window = getMainWindow()
@@ -45,7 +45,7 @@ export const updateTrayMenu = async () => {
             },
         },
     ])
-    menu.append(new MenuItem({ type: 'separator' }))
+    menu.append(new MenuItem({type: 'separator'}))
     if (unreadRooms.length) {
         for (const unreadRoom of unreadRooms) {
             menu.append(
@@ -77,7 +77,7 @@ export const updateTrayMenu = async () => {
                 },
             }),
         )
-        menu.append(new MenuItem({ type: 'separator' }))
+        menu.append(new MenuItem({type: 'separator'}))
     }
     menu.append(
         new MenuItem({
@@ -116,7 +116,7 @@ export const updateTrayMenu = async () => {
             ],
         }),
     )
-    menu.append(
+    process.platform === 'darwin' && menu.append(
         new MenuItem({
             label: '深色图标',
             type: 'checkbox',
@@ -146,11 +146,13 @@ export const updateTrayIcon = async () => {
         const newMsgRoom = await getFirstUnreadRoom()
         const extra = newMsgRoom ? ' : ' + newMsgRoom.roomName : ''
         getMainWindow().title = `(${unread}${extra}) ${title}`
-    } else {
+    }
+    else {
         p = path.join(getStaticPath(), getConfig().darkTaskIcon ? 'dark.png' : '256x256.png')
         getMainWindow().title = title
     }
-    tray.setImage(p)
+    tray.setTitle(unread === 0 ? '' : `${unread}`)
+    process.platform !== 'darwin' && tray.setImage(p)
     app.setBadgeCount(unread)
     updateTrayMenu()
 }

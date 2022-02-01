@@ -31,13 +31,7 @@ export default {
 </script>
 
 <style>
-@import url('./assets/stylesheet.css');
 @import url('./assets/scrollbar.css');
-
-@font-face {
-    font-family: 'msyh';
-    src: url('./assets/msyh.ttf');
-}
 
 @font-face {
     font-family: 'twemoji';
@@ -53,7 +47,7 @@ body {
 }
 
 * {
-    font-family: font, 'CircularSpotifyTxT Book Web', msyh, twemoji, 'PingFang SC', sans-serif;
+    font-family: font, -apple-system, BlinkMacSystemFont, "SF Pro Text", twemoji, sans-serif;
 }
 
 :focus {

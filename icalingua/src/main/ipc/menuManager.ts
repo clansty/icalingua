@@ -218,8 +218,8 @@ const buildRoomMenu = (room: Room): Menu => {
                 label: '群文件',
                 async click() {
                     let url
-                        const token = await requestGfsToken(-room.roomId)
-                        url = `${getConfig().server}/file-manager/?${token}`
+                    const token = await requestGfsToken(-room.roomId)
+                    url = `${getConfig().server}/file-manager/?${token}`
                     const size = screen.getPrimaryDisplay().size
                     const win = new BrowserWindow({
                         autoHideMenuBar: true,
@@ -520,8 +520,8 @@ export const updateAppMenu = async () => {
         ],
         priority: new MenuItem({
             label: '通知优先级',
+            // @ts-ignore TS 出 bug 了
             submenu: [
-                // @ts-ignore TS 出 bug 了
                 ...[1, 2, 3, 4, 5].map(e => ({
                     type: 'radio',
                     label: `${e}`,
@@ -529,15 +529,6 @@ export const updateAppMenu = async () => {
                     // @ts-ignore
                     click: () => setPriority(e),
                 })),
-                {
-                    // @ts-ignore
-                    type: 'separator',
-                },
-                // @ts-ignore
-                {
-                    label: '帮助',
-                    click: () => openImage(path.join(getStaticPath(), 'notification.webp')),
-                },
             ],
         }),
         //设置
