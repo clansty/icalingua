@@ -13,21 +13,18 @@ import { getMainWindow, loadMainWindow, sendToLoginWindow, showLoginWindow, show
 import { createTray, updateTrayIcon } from '../utils/trayManager'
 import ui from '../utils/ui'
 import { updateAppMenu } from '../ipc/menuManager'
-import avatarCache from '../utils/avatarCache'
 import fs from 'fs'
 import fileType from 'file-type'
 import axios from 'axios'
 import RoamingStamp from '../../types/RoamingStamp'
 import OnlineData from '../../types/OnlineData'
 import SearchableFriend from '../../types/SearchableFriend'
-import { Notification } from 'freedesktop-notifications'
-import isInlineReplySupported from '../utils/isInlineReplySupported'
 import BridgeVersionInfo from '../../types/BridgeVersionInfo'
 import getBuildInfo from '../utils/getBuildInfo'
 import path from 'path'
 import getStaticPath from '../../utils/getStaticPath'
 import formatDate from '../../utils/formatDate'
-import getAvatarUrl from '../../utils/getAvatarUrl'
+import * as notify from '../utils/plantformNotify'
 
 // 这是所对应服务端协议的版本号，如果协议有变动比如说调整了 API 才会更改。
 // 如果只是功能上的变动的话就不会改这个版本号，混用协议版本相同的服务端完全没有问题
@@ -129,47 +126,7 @@ const attachSocketEvents = () => {
                 !data.isSelfMsg
             ) {
                 //notification
-                const actions = {
-                    default: '',
-                    read: '标为已读',
-                }
-                if (await isInlineReplySupported()) actions['inline-reply'] = '回复...'
-
-                const notifParams = {
-                    ...data.data,
-                    summary: data.data.title,
-                    appName: 'Icalingua',
-                    category: 'im.received',
-                    'desktop-entry': 'icalingua',
-                    urgency: 1,
-                    timeout: 5000,
-                    icon: await avatarCache(getAvatarUrl(data.roomId, true)),
-                    'x-kde-reply-placeholder-text': '发送到 ' + data.data.title,
-                    'x-kde-reply-submit-button-text': '发送',
-                    actions,
-                }
-                if (data.image) notifParams['x-kde-urls'] = await avatarCache(data.image)
-                const notif = new Notification(notifParams)
-                notif.on('action', (action: string) => {
-                    switch (action) {
-                        case 'default':
-                            showWindow()
-                            ui.chroom(data.roomId)
-                            break
-                        case 'read':
-                            adapter.clearRoomUnread(data.roomId)
-                            break
-                    }
-                })
-                notif.on('reply', (r: string) => {
-                    adapter.clearRoomUnread(data.roomId)
-                    adapter.sendMessage({
-                        content: r,
-                        roomId: data.roomId,
-                        at: [],
-                    })
-                })
-                notif.push()
+                notify.message(data)
             }
         },
     )

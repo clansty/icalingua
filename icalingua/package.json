@@ -24,6 +24,7 @@
   "build": {
     "productName": "Icalingua",
     "appId": "com.clansty.icalingua",
+    "asar": false,
     "directories": {
       "output": "build",
       "buildResources": "static"
@@ -34,11 +35,21 @@
     "linux": {
       "target": [
         {
-          "target": "tar.xz"
+          "target": "dir"
         }
       ],
       "executableName": "icalingua",
       "category": "Network"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dir"
+        }
+      ],
+      "darkModeSupport": true,
+      "icon": "static/icons/512x512.png",
+      "type": "development"
     }
   },
   "devDependencies": {
