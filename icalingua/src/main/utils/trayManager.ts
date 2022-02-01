@@ -116,7 +116,7 @@ export const updateTrayMenu = async () => {
             ],
         }),
     )
-    process.platform === 'darwin' && menu.append(
+    process.platform !== 'darwin' && menu.append(
         new MenuItem({
             label: '深色图标',
             type: 'checkbox',
